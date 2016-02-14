@@ -16,11 +16,11 @@
 <title>Add Location | NayaPuranaa</title>
 </head>
 <body>
-	<jsp:include page="header.jsp"/>
+	<%-- <jsp:include page="header.jsp"/> --%>
 	<div id="contact-page" class="container">
 		<div class="bg">
 			<div class="row">
-			<jsp:include page="leftsidebar.jsp"/>
+			<%-- <jsp:include page="leftsidebar.jsp"/> --%>
 
 				<div class="col-sm-8">
 					<div class="contact-form">`

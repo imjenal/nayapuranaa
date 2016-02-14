@@ -18,7 +18,6 @@ import org.springframework.web.util.HtmlUtils;
 import nayapuranaa.PMF;
 import nayapuranaa.model.Category;
 import nayapuranaa.model.Feedback;
-import nayapuranaa.model.User;
 
 @Controller
 @RequestMapping("/contact-us")

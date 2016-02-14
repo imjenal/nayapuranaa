@@ -65,6 +65,45 @@ $(document).ready(function()
 <script src="/js/jquery-1.10.2.js"></script>
 <script src="/js/jquery-ui.js"></script>
 <link rel="stylesheet" href="/css/style.css">
+<script type="text/javascript">
+function setLocation(){
+var location=	$("#enterLocation").val();
+	setCookie('location',location,30);
+}
+</script>
+
+
+<script type="text/javascript">
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+
+function checkCookie() {
+    var user = getCookie("username");
+    if (user != "") {
+        alert("Welcome again " + user);
+    } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+            setCookie("username", user, 365);
+        }
+    }
+}
+</script>
 <script>
   $(function() {
     var availableTags = [
@@ -80,7 +119,7 @@ List<College> colList = (List<College>) q.execute();
       source: availableTags
     });
   });
-  </script>
+  </script> 
 
 
 
@@ -191,10 +230,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 		List<Category> catList = (List<Category>) request
 				.getAttribute("listCategory");
-		
-		
-		pm = PMF.get().getPersistenceManager();
-		q = pm.newQuery(Location.class);
+
+		 pm = PMF.get().getPersistenceManager();
+		 q = pm.newQuery(Location.class);
 		q.setOrdering("locationName");
 		List<Location> locList = (List<Location>) q.execute();
 	%>
@@ -215,7 +253,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 							</a></li>
 						</ul>
 
-						
+
 
 					</div>
 				</div>
@@ -384,44 +422,66 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 						</form>
 					</div>
 				</div>
-					
-								
-				<div id="selectLocation" class="modal fade" role="dialog">
-							<div class="modal-dialog modal-sm">
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 align="center" class="modal-title">Select Your City</h4>
-									</div>
-									<div class="modal-body">
-										<div class="status alert alert-success" style="display: none"></div>
-										<form action="#" method="post" id="main-contact-form"
-											class="contact-form row">
-											<div class="ui-widget form-group col-md-12">
-										<select name="enterLocation" id="enterLocation"
-													class="form-control">
-										<option value="0"> Select Your City</option>
-									<%	for(Location loc:locList){%>
-      
-    
-										
-										<option value="<%=loc.getLocationName()%>"> <%=loc.getLocationName()%></option>
-								  <%}%>		</select>
-									</div>
-										</form>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-info">Save
-											changes</button>
-									</div>
-								</div>
 
+
+				<div id="selectLocation" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-sm">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 align="center" class="modal-title">Select Your City</h4>
+							</div>
+							<div class="modal-body">
+								<div class="status alert alert-success" style="display: none"></div>
+								<form action="#" method="post" id="main-contact-form"
+									class="contact-form row">
+									<div class="ui-widget form-group col-md-12">
+										<select name="enterLocation" id="enterLocation"
+											class="form-control">
+											<option value="0">Select Your City</option>
+											<option value="">All</option>
+											<%
+												for (Location loc : locList) {
+													String location="";
+													 Cookie[] cookies = request.getCookies();
+													    if (cookies != null) {
+													      for (int i = 0; i < cookies.length; i++) {
+													        if (cookies[i].getName().equals("location")) {
+													          location = cookies[i].getValue();
+													          break;
+													        }
+													      }
+													    }
+													if(loc.getLocationName().equals(location)){%>
+												<option selected="selected" value="<%=loc.getLocationName()%>">
+												<%=loc.getLocationName()%></option>
+												
+												<%		System.out.println(location);
+													}else{
+											%>
+
+
+
+											<option value="<%=loc.getLocationName()%>">
+												<%=loc.getLocationName()%></option>
+											<%
+												}}
+											%>
+										</select>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-info" onclick="setLocation()">Save changes</button>
 							</div>
 						</div>
-				
+
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>

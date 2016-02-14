@@ -11,29 +11,29 @@ import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
 public class Product {
-	
+
 	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key productId;
-	
-	@Persistent
-    private String userId;
-	
-	@Persistent
-    private String productName;
 
 	@Persistent
-    private String description;
+	private String userId;
 
 	@Persistent
-    private String collegeName;
-	
+	private String productName;
+
 	@Persistent
-    private Date date;
-	
+	private String description;
+
+	@Persistent
+	private String collegeName;
+
+	@Persistent
+	private Date date;
+
 	@Persistent
 	private String productImage;
-	
+
 	@Persistent
 	private Date modificatioDate;
 
@@ -42,10 +42,10 @@ public class Product {
 
 	@Persistent
 	private int price;
-	
+
 	@Persistent
 	private int quantity;
-	
+
 	@Persistent
 	private String category;
 
@@ -54,42 +54,53 @@ public class Product {
 
 	@Persistent
 	private String innerSubCategory;
-	
+
 	@Persistent
 	private String specialCategory;
-	
+
 	@Persistent
 	private String productDetails;
-	
-	@Persistent 
-	private String contactperson;
-	
+
 	@Persistent
-    private String email;
-	
-	@Persistent 
+	private String contactperson;
+
+	@Persistent
+	private String email;
+
+	@Persistent
 	private String phoneno;
-	
-	@Persistent 
+
+	@Persistent
 	private String fbprofile;
-	@Persistent 
+	@Persistent
 	private String condition;
-	
-	@Persistent 
+
+	@Persistent
 	private String publications;
-	
-	@Persistent 
+
+	@Persistent
 	private String author;
-	
-	@Persistent 
+
+	@Persistent
 	private String edition;
-	
-	@Persistent 
+
+	@Persistent
 	private String type;
 
-	@Persistent 
+	@Persistent
 	private String otherDetails;
-	
+
+	@Persistent
+	private String location;
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -97,7 +108,7 @@ public class Product {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getFbprofile() {
 		return fbprofile;
 	}
@@ -121,7 +132,7 @@ public class Product {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
 	public String getCollegeName() {
 		return collegeName;
 	}
@@ -187,17 +198,17 @@ public class Product {
 	}
 
 	public String getProductDetails() {
-	return productDetails;
+		return productDetails;
 	}
-	
+
 	public void setProductDetails(String productDetails) {
 		this.productDetails = productDetails;
 	}
-	
+
 	public String getOtherDetails() {
 		return otherDetails;
 	}
-	
+
 	public void setOtherDetails(String otherDetails) {
 		this.otherDetails = otherDetails;
 	}
@@ -297,5 +308,5 @@ public class Product {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
+
 }

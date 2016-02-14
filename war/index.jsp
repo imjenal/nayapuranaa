@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="nayapuranaa.dao.ProductDao"%>
 <%@page import="nayapuranaa.model.Wishlist"%>
 <%@page import="com.google.appengine.api.datastore.KeyFactory"%>
 <%@page import="nayapuranaa.PMF"%>
@@ -109,13 +110,25 @@
 						<!--features_items-->
 						<h2 class="title text-center">Featured Items</h2>
 						<%
-							PersistenceManager pm = PMF.get().getPersistenceManager();
-							Query q = pm.newQuery(Product.class);
-							q.setOrdering("date desc");
-							q.setRange(0, 9);
-							List<Product> results2 = null;
+							String location = "";
+							Cookie[] cookies = request.getCookies();
+							if (cookies != null) {
+								for (int i = 0; i < cookies.length; i++) {
+									if (cookies[i].getName().equals("location")) {
+										location = cookies[i].getValue();
+										break;
+									}
+								}
+							}
+
+							ProductDao productDao = (ProductDao) request
+									.getAttribute("productDao");
+							List<Product> results2 = productDao
+									.getProductListByLocationByRange(location, 0, 9);
+							PersistenceManager	pm = PMF.get().getPersistenceManager();
+							Query q=null;
+							
 							try {
-								results2 = (List<Product>) q.execute();
 								for (Product product : results2) {
 						%>
 						<div class="col-sm-4">
@@ -189,8 +202,7 @@
 						<%
 							}
 							} finally {
-								q.closeAll();
-								pm.close();
+								
 							}
 						%>
 
@@ -243,15 +255,9 @@
 							<div class="tab-pane fade active in"
 								id="<%=KeyFactory.keyToString(cat.getCategoryId())%>">
 								<%
-									q = pm.newQuery(Product.class);
-											q.setFilter("category==cat");
-											q.setOrdering("date desc");
-											q.setRange(0, 4);
-											q.declareParameters("String cat");
-											List<Product> listProduct = (List<Product>) q.execute(cat
-													.getName());
+							
+											List<Product> listProduct =productDao.getProductListByCategoryByRange(location, cat.getName(), 0, 4);
 											for (Product product : listProduct) {
-								
 								%>
 
 
@@ -259,16 +265,21 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<% 
-												if(product.getProductImage()!=null){%>
+												<%
+													if (product.getProductImage() != null) {
+												%>
 												<img
 													src='<%="product/serve?blob-key="
-								+ product.getProductImage()%>'
+									+ product.getProductImage()%>'
 													alt="" width="146" height="129" />
-												<% } else{ %>
+												<%
+													} else {
+												%>
 												<img src="/images/default.png" alt="" width="146"
 													height="129" />
-												<% } %>
+												<%
+													}
+												%>
 												<h2>
 													<!-- Rupee -->
 													&#8377;<%=product.getPrice()%></h2>
@@ -299,13 +310,8 @@
 							<div class="tab-pane fade"
 								id="<%=KeyFactory.keyToString(cat.getCategoryId())%>">
 								<%
-									q = pm.newQuery(Product.class);
-											q.setFilter("category==cat");
-											q.setOrdering("date desc");
-											q.setRange(0, 4);
-											q.declareParameters("String cat");
-											List<Product> listProduct = (List<Product>) q.execute(cat
-													.getName());
+								List<Product> listProduct =productDao.getProductListByCategoryByRange(location, cat.getName(), 0, 4);
+								
 											for (Product product : listProduct) {
 								%>
 
@@ -314,16 +320,21 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<% 
-												if(product.getProductImage()!=null){%>
+												<%
+													if (product.getProductImage() != null) {
+												%>
 												<img
 													src='<%="product/serve?blob-key="
-								+ product.getProductImage()%>'
+									+ product.getProductImage()%>'
 													alt="" width="146" height="129" />
-												<% } else{ %>
+												<%
+													} else {
+												%>
 												<img src="/images/default.png" alt="" width="146"
 													height="129" />
-												<% } %>
+												<%
+													}
+												%>
 												<h2>
 													<!-- Rupee -->
 													&#8377;<%=product.getPrice()%></h2>

@@ -1,23 +1,17 @@
-<!-- Indices written at Sat, 23 Jan 2016 06:03:28 IST -->
+<!-- Indices written at Sun, 14 Feb 2016 13:15:22 UTC -->
 
 <datastore-indexes>
 
-    <!-- Used 70 times in query history -->
+    <!-- Used 10 times in query history -->
     <datastore-index kind="SubCategory" ancestor="false" source="auto">
         <property name="categoryId" direction="asc"/>
         <property name="name" direction="asc"/>
     </datastore-index>
 
-    <!-- Used 145 times in query history -->
+    <!-- Used 29 times in query history -->
     <datastore-index kind="InnerSubCategory" ancestor="false" source="auto">
         <property name="subCategoryId" direction="asc"/>
         <property name="name" direction="asc"/>
-    </datastore-index>
-
-    <!-- Used 5 times in query history -->
-    <datastore-index kind="Product" ancestor="false" source="auto">
-        <property name="category" direction="asc"/>
-        <property name="date" direction="desc"/>
     </datastore-index>
 
 </datastore-indexes>

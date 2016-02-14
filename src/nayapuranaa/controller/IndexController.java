@@ -17,11 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import nayapuranaa.PMF;
+import nayapuranaa.dao.ProductDao;
 import nayapuranaa.model.Category;
 import nayapuranaa.model.InnerSubCategory;
 import nayapuranaa.model.SubCategory;
 import nayapuranaa.model.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +35,11 @@ import org.springframework.web.util.HtmlUtils;
 @Controller
 public class IndexController {
 
+	@Autowired ProductDao productDao;
+	
 	@RequestMapping("/index")
 	public String getHomePage(ModelMap model) {
+		model.addAttribute("productDao",productDao);
 		return "index";
 	}
 

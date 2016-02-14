@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import nayapuranaa.PMF;
+import nayapuranaa.dao.ProductDao;
 import nayapuranaa.model.Product;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,18 +20,25 @@ import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class SearchController {
+	@Autowired ProductDao productDao;
+	
 	@RequestMapping("/search")
 	public String search(ModelMap map, HttpServletRequest request) {
 		String hint =  HtmlUtils.htmlEscape(request.getParameter("hint")).toLowerCase();
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Query q = pm.newQuery(Product.class);
-		 /*q.setFilter("productName.matches(\"subcatParam*\")");
-		 q.declareParameters("String subcatParam");*/
-		q.setOrdering("productName desc");
-		List<Product> results = null;
+		String location = "";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				if (cookies[i].getName().equals("location")) {
+					location = cookies[i].getValue();
+					break;
+				}
+			}
+		}
+		List<Product> results = productDao.getProductListByLocation(location);
+
 		List<Product> result = new ArrayList<Product>();
 		try {
-			results = (List<Product>) q.execute();
 			for (Product product : results) {
 				if ((product.getProductName() != null && product
 						.getProductName().toLowerCase().contains(hint))
@@ -63,8 +73,6 @@ public class SearchController {
 				}
 			}
 		} finally {
-			q.closeAll();
-			// pm.close();
 		}
 		map.addAttribute("listProduct", result);
 		return "search";

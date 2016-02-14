@@ -110,7 +110,7 @@
 				</div>
 			</div>
 			<div class="review-payment">
-				<h2>Review & Payment</h2>
+				<h2>Review &amp; Payment</h2>
 			</div>
 
 			<div class="table-responsive cart_info">

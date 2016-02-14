@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,18 +25,24 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 
 import nayapuranaa.PMF;
+import nayapuranaa.dao.ProductDao;
+import nayapuranaa.dao.UserDao;
 import nayapuranaa.model.Category;
 import nayapuranaa.model.InnerSubCategory;
 import nayapuranaa.model.Product;
 import nayapuranaa.model.SpecialCategory;
 import nayapuranaa.model.SubCategory;
-import nayapuranaa.model.Wishlist;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 	BlobstoreService blobstoreService = BlobstoreServiceFactory
 			.getBlobstoreService();
+
+	@Autowired
+	UserDao userDao;
+	@Autowired
+	ProductDao productDao;
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String getAddProductPage(ModelMap model) {
@@ -108,27 +116,38 @@ public class ProductController {
 		BlobKey blobKey = blobs.get("productImage");
 		String userid = HtmlUtils.htmlEscape(req.getParameter("userid"));
 		String name = HtmlUtils.htmlEscape(req.getParameter("productName"));
-		String description = HtmlUtils.htmlEscape(req.getParameter("description"));
+		String description = HtmlUtils.htmlEscape(req
+				.getParameter("description"));
 		String category = HtmlUtils.htmlEscape(req.getParameter("category"));
-		String subcategory = HtmlUtils.htmlEscape(req.getParameter("subcategory"));
-		String innersubcategory = HtmlUtils.htmlEscape(req.getParameter("innersubcategory"));
-		String speccategory = HtmlUtils.htmlEscape(req.getParameter("speccategory"));
-		String productDetails = HtmlUtils.htmlEscape(req.getParameter("productDetails"));
-		String otherDetails = HtmlUtils.htmlEscape(req.getParameter("otherDetails"));
-		String cancelledprice = HtmlUtils.htmlEscape(req.getParameter("cancelledprice"));
+		String subcategory = HtmlUtils.htmlEscape(req
+				.getParameter("subcategory"));
+		String innersubcategory = HtmlUtils.htmlEscape(req
+				.getParameter("innersubcategory"));
+		String speccategory = HtmlUtils.htmlEscape(req
+				.getParameter("speccategory"));
+		String productDetails = HtmlUtils.htmlEscape(req
+				.getParameter("productDetails"));
+		String otherDetails = HtmlUtils.htmlEscape(req
+				.getParameter("otherDetails"));
+		String cancelledprice = HtmlUtils.htmlEscape(req
+				.getParameter("cancelledprice"));
 		String price = HtmlUtils.htmlEscape(req.getParameter("price"));
 		String quantity = HtmlUtils.htmlEscape(req.getParameter("quantity"));
 		String edition = HtmlUtils.htmlEscape(req.getParameter("edition"));
 		String author = HtmlUtils.htmlEscape(req.getParameter("author"));
-		String publications = HtmlUtils.htmlEscape(req.getParameter("publications"));
+		String publications = HtmlUtils.htmlEscape(req
+				.getParameter("publications"));
 		String condition = HtmlUtils.htmlEscape(req.getParameter("condition"));
-		String contactperson = HtmlUtils.htmlEscape(req.getParameter("contactperson"));
+		String contactperson = HtmlUtils.htmlEscape(req
+				.getParameter("contactperson"));
 		String phoneno = HtmlUtils.htmlEscape(req.getParameter("phoneno"));
 		String email = HtmlUtils.htmlEscape(req.getParameter("email"));
 		String fbprofile = HtmlUtils.htmlEscape(req.getParameter("fbprofile"));
-		String collegeName = HtmlUtils.htmlEscape(req.getParameter("collegeName"));
+		String collegeName = HtmlUtils.htmlEscape(req
+				.getParameter("collegeName"));
 		Product c = new Product();
 		c.setUserId(userid);
+		c.setLocation(userDao.getUserByEmail(userid).getCity());
 		c.setProductName(name);
 		c.setDescription(description);
 		c.setCategory(category);
@@ -154,13 +173,13 @@ public class ProductController {
 		c.setCondition(condition);
 		c.setContactperson(contactperson);
 		c.setPhoneno(phoneno);
-	    c.setEmail(email);
+		c.setEmail(email);
 		c.setFbprofile(fbprofile);
 		c.setCollegeName(collegeName);
 		String[] type = req.getParameterValues("type");
 		String types = "";
 		for (int i = 0; i < type.length; i++) {
-			types = types +  HtmlUtils.htmlEscape(type[i]) + " ,";
+			types = types + HtmlUtils.htmlEscape(type[i]) + " ,";
 		}
 		c.setType(types);
 		c.setProductImage(blobKey.getKeyString());
@@ -173,17 +192,18 @@ public class ProductController {
 			pm.close();
 		}
 		if (blobKey == null) {
-			model.addAttribute("posted","Error Occured! Post Again!");
+			model.addAttribute("posted", "Error Occured! Post Again!");
 			return new ModelAndView("redirect:../postyourbook");
 		} else {
-			model.addAttribute("posted","You have posted successfully!!");
+			model.addAttribute("posted", "You have posted successfully!!");
 			return new ModelAndView("redirect:../postyourbook");
 		}
 	}
 
 	@RequestMapping(value = "/serve", method = RequestMethod.GET)
 	public void serve(HttpServletRequest req, HttpServletResponse res) {
-		BlobKey blobKey = new BlobKey( HtmlUtils.htmlEscape(req.getParameter("blob-key")));
+		BlobKey blobKey = new BlobKey(HtmlUtils.htmlEscape(req
+				.getParameter("blob-key")));
 		try {
 			blobstoreService.serve(blobKey, res);
 		} catch (IOException e) {
@@ -194,12 +214,14 @@ public class ProductController {
 	 * @RequestMapping(value = "/add", method = RequestMethod.POST) public
 	 * ModelAndView add(HttpServletRequest request, ModelMap model) {
 	 * System.out.println("blob testing"); String name =
-	 *  HtmlUtils.htmlEscape(request.getParameter("productName")); Product c = new Product();
-	 * c.setProductName(name); c.setDate(new Date());
-	 * c.setDescription( HtmlUtils.htmlEscape(request.getParameter("description")));
-	 * c.setModificatioDate(new Date());
-	 * c.setPrice( HtmlUtils.htmlEscape(request.getParameter("price")));
-	 * c.setQuantity(Integer.parseInt( HtmlUtils.htmlEscape(request.getParameter("quantity"))));
+	 * HtmlUtils.htmlEscape(request.getParameter("productName")); Product c =
+	 * new Product(); c.setProductName(name); c.setDate(new Date());
+	 * c.setDescription(
+	 * HtmlUtils.htmlEscape(request.getParameter("description")));
+	 * c.setModificatioDate(new Date()); c.setPrice(
+	 * HtmlUtils.htmlEscape(request.getParameter("price")));
+	 * c.setQuantity(Integer.parseInt(
+	 * HtmlUtils.htmlEscape(request.getParameter("quantity"))));
 	 * PersistenceManager pm = PMF.get().getPersistenceManager(); try {
 	 * pm.makePersistent(c); } finally { pm.close(); } return new
 	 * ModelAndView("redirect:listProduct");
@@ -293,33 +315,41 @@ public class ProductController {
 	public ModelAndView update(HttpServletRequest req, ModelMap model) {
 		Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
 		BlobKey blobKey = blobs.get("productImage");
-		String name =  HtmlUtils.htmlEscape(req.getParameter("productName"));
-		String key =  HtmlUtils.htmlEscape(req.getParameter("key"));
+		String name = HtmlUtils.htmlEscape(req.getParameter("productName"));
+		String key = HtmlUtils.htmlEscape(req.getParameter("key"));
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			Product c = pm.getObjectById(Product.class, key);
 			c.setDate(new Date());
-			c.setCategory( HtmlUtils.htmlEscape(req.getParameter("category")));
-			c.setSubCategory( HtmlUtils.htmlEscape(req.getParameter("subcategory")));
-			c.setSpecialCategory( HtmlUtils.htmlEscape(req.getParameter("speccategory")));
+			c.setCategory(HtmlUtils.htmlEscape(req.getParameter("category")));
+			c.setSubCategory(HtmlUtils.htmlEscape(req
+					.getParameter("subcategory")));
+			c.setSpecialCategory(HtmlUtils.htmlEscape(req
+					.getParameter("speccategory")));
 			c.setProductName(name);
 			c.setDate(new Date());
-			c.setDescription( HtmlUtils.htmlEscape(req.getParameter("description")));
+			c.setDescription(HtmlUtils.htmlEscape(req
+					.getParameter("description")));
 			c.setModificatioDate(new Date());
-			c.setCancelledPrice(Integer.parseInt( HtmlUtils.htmlEscape(req
+			c.setCancelledPrice(Integer.parseInt(HtmlUtils.htmlEscape(req
 					.getParameter("cancelledprice"))));
-			c.setPrice(Integer.parseInt( HtmlUtils.htmlEscape(req.getParameter("price"))));
-			c.setQuantity(Integer.parseInt( HtmlUtils.htmlEscape(req.getParameter("quantity"))));
-			c.setInnerSubCategory( HtmlUtils.htmlEscape(req.getParameter("innersubcategory")));
-			if ( HtmlUtils.htmlEscape(req.getParameter("productDetails")) != null) {
+			c.setPrice(Integer.parseInt(HtmlUtils.htmlEscape(req
+					.getParameter("price"))));
+			c.setQuantity(Integer.parseInt(HtmlUtils.htmlEscape(req
+					.getParameter("quantity"))));
+			c.setInnerSubCategory(HtmlUtils.htmlEscape(req
+					.getParameter("innersubcategory")));
+			if (HtmlUtils.htmlEscape(req.getParameter("productDetails")) != null) {
 
-				c.setProductDetails( HtmlUtils.htmlEscape(req.getParameter("productDetails")));
+				c.setProductDetails(HtmlUtils.htmlEscape(req
+						.getParameter("productDetails")));
 			} else {
 				c.setProductDetails("");
 			}
-			if ( HtmlUtils.htmlEscape(req.getParameter("otherDetails")) != null) {
+			if (HtmlUtils.htmlEscape(req.getParameter("otherDetails")) != null) {
 
-				c.setOtherDetails( HtmlUtils.htmlEscape(req.getParameter("otherDetails")));
+				c.setOtherDetails(HtmlUtils.htmlEscape(req
+						.getParameter("otherDetails")));
 			} else {
 				c.setOtherDetails("");
 			}
@@ -345,29 +375,24 @@ public class ProductController {
 
 	// get all customers
 	@RequestMapping(value = "/listProduct", method = RequestMethod.GET)
-	public String listProduct(ModelMap model) {
+	public String listProduct(ModelMap model, HttpServletRequest request) {
 		// System.out.println("this is product list.");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query q = pm.newQuery(Product.class);
-		q.setOrdering("date desc");
-		List<Product> results = null;
-		try {
-			results = (List<Product>) q.execute();
-			if (results.isEmpty()) {
-				// System.out.println("result empty");
-				model.addAttribute("listProduct", null);
-			} else {
-				/*
-				 * System.out.println("result not empty " +
-				 * results.get(0).getProductName());
-				 */
-
-				model.addAttribute("listProduct", results);
+		String location = "";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				if (cookies[i].getName().equals("location")) {
+					location = cookies[i].getValue();
+					break;
+				}
 			}
-		} finally {
-			q.closeAll();
-			pm.close();
 		}
+
+		model.addAttribute("listProduct",
+				productDao.getProductListByLocation(location));
+
 		return "listProduct";
 	}
 }

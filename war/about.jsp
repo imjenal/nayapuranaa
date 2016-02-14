@@ -75,7 +75,7 @@
 					<div style="float:left">
 					<img src="web/images/about-img.jpg" alt="" style="float:left;margin-right:20px;"/>
 						
-						We offer a complete range of food products, personal care, home care for men, women & boys! 
+						We offer a complete range of food products, personal care, home care for men, women &amp; boys! 
 						Choose from exciting range of products from our website. We offers free shipping and cash on delivery on at least 500 Rs.
 						Get the best prices and online shopping experience always with apnidukanonline.com
 						Our discerning customers vouch for the comfort, the fit and oomph we lend across our entire range. ApniDukanOnline 
