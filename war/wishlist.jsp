@@ -23,12 +23,13 @@
 			<div class="table-responsive cart_info">
 				<table class="table table-condensed">
 					<thead>
-						<tr class="cart_menu">
-							<td class="image">Item</td>
-							<td class="description"></td>
-							<td class="price">Price</td>
-							<td class="quantity">Sell/Exchange/Free</td>
-							<td class="total">Contact Person</td>
+						<tr  class="cart_menu">
+							<td width="15%" class="image">Item</td>
+							<td width="30%" class="description"></td>
+							<td width="20%" class="price">Price</td>
+							<td width="5%" class="quantity">Sell/Exchange/Free</td>
+							<td width="30%" class="total">Contact Person</td>
+							<td width="10%" class="total">Contact Person</td>
 							<td></td>
 						</tr>
 					</thead>

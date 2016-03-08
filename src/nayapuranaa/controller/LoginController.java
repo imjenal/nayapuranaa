@@ -7,6 +7,7 @@ import javax.jdo.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,39 +18,50 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 
 import nayapuranaa.PMF;
+import nayapuranaa.dao.CategoryDao;
+import nayapuranaa.dao.ProductDao;
 import nayapuranaa.model.Category;
 import nayapuranaa.model.User;
 
 @Controller
 public class LoginController {
 
+
+	@Autowired ProductDao productDao;
+	@Autowired CategoryDao categoryDao;
+
 	@RequestMapping("/login")
 	public String userlogin(ModelMap map, HttpServletRequest request) {
 		map.addAttribute("p",  HtmlUtils.htmlEscape(request.getParameter("p")));
 		HttpSession hs = request.getSession(false);
-		if (hs != null && hs.getAttribute("userid") != null)
+		if (hs != null && hs.getAttribute("userid") != null){
+			map.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
 			return "index";
+		}
 		else
 			return "login";
 	}
 
 	@RequestMapping("/logout")
-	public String userlogout(HttpServletRequest req) {
+	public String userlogout(ModelMap map,HttpServletRequest req) {
 		HttpSession hs = req.getSession(false);
 		if (hs != null) {
 			hs.removeAttribute("userid");
 			hs.invalidate();
+			map.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
 		}
 		return "index";
 	}
 
 	@RequestMapping("/profile")
-	public String userprofile(ModelMap model, HttpServletRequest request) {
+	public String userprofile(ModelMap map, HttpServletRequest request) {
 		HttpSession hs = request.getSession(false);
-		if (hs != null && hs.getAttribute("userid") != null)
+		if (hs != null && hs.getAttribute("userid") != null){
+			map.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
 			return "profile";
+		}
 		else {
-			model.addAttribute("p", "profile");
+			map.addAttribute("p", "profile");
 			return "/login";
 		}
 	}
@@ -98,12 +110,14 @@ public class LoginController {
 				c.setPassword(password);
 				model.addAttribute("registered",
 						"Password reset successfully, Login now !!");
+				model.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
 			} finally {
 				pm.close();
 			}
 			return "login";
-		} else
-			return "login";
+		} else{
+			model.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
+			return "login";}
 	}
 
 	@RequestMapping(value = "/resetpassword", method = RequestMethod.GET)
@@ -114,6 +128,7 @@ public class LoginController {
 			if (result != null) {
 				model.addAttribute("resultresetpage", result);
 			}
+			model.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
 			return "resetpassword";
 		} else {
 			model.addAttribute("p", "resetpassword");
@@ -136,6 +151,7 @@ public class LoginController {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query q = pm.newQuery(Category.class);
 		List<Category> result = null;
+		model.addAttribute("subCategoryList", categoryDao.getSubCategoryList());
 		try {
 			result = (List<Category>) q.execute();
 			if (result.isEmpty()) {
@@ -157,6 +173,7 @@ public class LoginController {
 				hs.setAttribute("username", results.get(0).getUserName());
 				hs.setAttribute("collegeName", results.get(0).getCollege());
 				hs.setAttribute("contactNo", results.get(0).getMobile());
+				model.addAttribute("productDao",productDao);
 				model.addAttribute("result", "Login Successfully!");
 				if (p != null && (!p.equals("null")))
 					// return new ModelAndView("redirect:"+p);

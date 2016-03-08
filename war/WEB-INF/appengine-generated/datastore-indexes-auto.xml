@@ -1,4 +1,4 @@
-<!-- Indices written at Sun, 14 Feb 2016 13:15:22 UTC -->
+<!-- Indices written at Mon, 7 Mar 2016 14:05:20 IST -->
 
 <datastore-indexes>
 
@@ -12,6 +12,19 @@
     <datastore-index kind="InnerSubCategory" ancestor="false" source="auto">
         <property name="subCategoryId" direction="asc"/>
         <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Product" ancestor="false" source="auto">
+        <property name="location" direction="asc"/>
+        <property name="date" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 5 times in query history -->
+    <datastore-index kind="Product" ancestor="false" source="auto">
+        <property name="category" direction="asc"/>
+        <property name="location" direction="asc"/>
+        <property name="date" direction="desc"/>
     </datastore-index>
 
 </datastore-indexes>

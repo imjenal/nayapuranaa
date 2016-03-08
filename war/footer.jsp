@@ -15,8 +15,8 @@
 							<h2><span>Naya</span>Puranaa</h2>
 							<p>Sell Exchange Donate</p>
 							<p>Give a book! Get a book!</p>
-							<p>Take a book! Leave a book!</p>
-						</div>
+<!-- 							<p>Take a book! Leave a book!</p>
+ -->						</div>
 					</div>
 					 <!-- < class="col-sm-7">
 					 <div class="col-sm-3">

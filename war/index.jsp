@@ -120,14 +120,16 @@
 									}
 								}
 							}
-
 							ProductDao productDao = (ProductDao) request
 									.getAttribute("productDao");
+
+System.out.println(productDao);
 							List<Product> results2 = productDao
 									.getProductListByLocationByRange(location, 0, 9);
+
 							PersistenceManager	pm = PMF.get().getPersistenceManager();
 							Query q=null;
-							
+
 							try {
 								for (Product product : results2) {
 						%>

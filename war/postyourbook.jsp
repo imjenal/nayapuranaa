@@ -194,10 +194,10 @@ function isNumberKey(evt){
 							</div>
 
 							<div class="form-group col-md-6">
-								<% if (email != null) {
+								<% if (userid != null) {
 								%>
 								<input type="email" name="email" id="email" class="form-control"
-									placeholder="Email Address" value="<%=email%>" />
+									placeholder="Email Address" value="<%=userid%>" />
 								<%
 									} else {
 								%>

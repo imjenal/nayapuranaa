@@ -34,6 +34,9 @@
 	href="/images/ico/apple-touch-icon-57-precomposed.png">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="/js/jquery.js"></script>
+<link rel="stylesheet" href="/css/jquery-ui.css">
+<script src="/js/jquery-1.10.2.js"></script>
+<script src="/js/jquery-ui.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.scrollUp.min.js"></script>
 <script src="/js/price-range.js"></script>
@@ -44,8 +47,7 @@
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js
-','ga');
+  })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-72178081-1', 'auto');
   ga('send', 'pageview');
@@ -61,14 +63,11 @@ $(document).ready(function()
 });
 </script>
 
-<link rel="stylesheet" href="/css/jquery-ui.css">
-<script src="/js/jquery-1.10.2.js"></script>
-<script src="/js/jquery-ui.js"></script>
-<link rel="stylesheet" href="/css/style.css">
 <script type="text/javascript">
 function setLocation(){
-var location=	$("#enterLocation").val();
-	setCookie('location',location,30);
+var locatn=	$("#enterLocation").val();
+	setCookie('location',locatn,30);
+	 location.reload();
 }
 </script>
 
@@ -119,7 +118,7 @@ List<College> colList = (List<College>) q.execute();
       source: availableTags
     });
   });
-  </script> 
+  </script>
 
 
 
@@ -210,14 +209,14 @@ $('#addWishlist'+productId).html("Added to Wishlist");
 
 	<!-- Google Tag Manager -->
 	<noscript>
-		<iframe src="//www.googletagmanager.com/ns.html?id=GTM-WBMHXT
+		<iframe src="http://www.googletagmanager.com/ns.html?id=GTM-WBMHXT
 "
 			height="0" width="0" style="display: none; visibility: hidden"></iframe>
 	</noscript>
 	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)
+'http://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f)
 ;
 })(window,document,'script','dataLayer','GTM-WBMHXT');</script>
 	<!-- End Google Tag Manager -->
@@ -225,16 +224,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 	<%
 		HttpSession hs = request.getSession(false);
-		String userid = (String) hs.getAttribute("userid");
-		String username = (String) hs.getAttribute("username");
+			String userid = (String) hs.getAttribute("userid");
+			String username = (String) hs.getAttribute("username");
 
-		List<Category> catList = (List<Category>) request
-				.getAttribute("listCategory");
+			List<Category> catList = (List<Category>) request
+			.getAttribute("listCategory");
 
-		 pm = PMF.get().getPersistenceManager();
-		 q = pm.newQuery(Location.class);
-		q.setOrdering("locationName");
-		List<Location> locList = (List<Location>) q.execute();
+			 pm = PMF.get().getPersistenceManager();
+			 q = pm.newQuery(Location.class);
+			q.setOrdering("locationName");
+			List<Location> locList = (List<Location>) q.execute();
 	%>
 	<header id="header"><!--header-->
 	<div class="header_top">
@@ -280,7 +279,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="logo pull-left">
-						<a href="/index"><img src="/images/logoedit.png" alt="" /></a>
+						<a href="/index"><img src="/images/finallogo3.png" alt="" /></a>
 					</div>
 
 					<!--BUTTON GROUP CSS Same  <div class="btn-group pull-right">
@@ -301,12 +300,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 						<ul class="nav navbar-nav">
 							<li><a href="/wishlist"> <%
  	if (userid != null) {
- 		pm = PMF.get().getPersistenceManager();
- 		q = pm.newQuery(Wishlist.class);
- 		q.setFilter("userId==userid");
- 		q.declareParameters("String userid");
- 		List<Wishlist> res = (List<Wishlist>) q.execute(userid);
- 		if (res.size() < 1) {
+  		pm = PMF.get().getPersistenceManager();
+  		q = pm.newQuery(Wishlist.class);
+  		q.setFilter("userId==userid");
+  		q.declareParameters("String userid");
+  		List<Wishlist> res = (List<Wishlist>) q.execute(userid);
+  		if (res.size() < 1) {
  %> <i id="bluestar" class="fa fa-star"></i>Wishlist <%
  	} else {
  %> <span class="fa-stack fa-1x"> <i id="bluestar"
@@ -315,7 +314,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 										style="font-width: 8px; color: white; font-size: 8px;"><%=res.size()%></strong>
 								</span> Wishlist <%
 									}
-									} else {
+															} else {
 								%> <i id="bluestar" class="fa fa-star"></i>Wishlist <%
  	}
  %></a></li>
@@ -381,15 +380,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 						<ul class="nav navbar-nav collapse navbar-collapse">
 							<%
 								pm = PMF.get().getPersistenceManager();
-								q = pm.newQuery(Category.class);
-								List<Category> results = null;
-								try {
-									results = (List<Category>) q.execute();
-									q = pm.newQuery(SubCategory.class);
-									q.setFilter("categoryId == nameParameter");
-									q.setOrdering("name");
-									q.declareParameters("String nameParameter");
-									for (Category cat : results) {
+													q = pm.newQuery(Category.class);
+													List<Category> results = null;
+													try {
+														results = (List<Category>) q.execute();
+														q = pm.newQuery(SubCategory.class);
+														q.setFilter("categoryId == nameParameter");
+														q.setOrdering("name");
+														q.declareParameters("String nameParameter");
+														for (Category cat : results) {
 							%>
 							<li class="dropdown"><a
 								href="catlist?name=<%=cat.getName()%>"><%=cat.getName()%> <i
@@ -397,8 +396,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								<ul role="menu" class="sub-menu">
 									<%
 										List<SubCategory> subcatList = (List<SubCategory>) q
-														.execute(cat.getName());
-												for (SubCategory subcat : subcatList) {
+																					.execute(cat.getName());
+																			for (SubCategory subcat : subcatList) {
 									%>
 									<li><a href="subcatlist?name=<%=subcat.getName()%>"><%=subcat.getName()%></a></li>
 									<%
@@ -407,10 +406,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								</ul></li>
 							<%
 								}
-								} finally {
-									q.closeAll();
-									//pm.close();
-								}
+													} finally {
+														q.closeAll();
+														//pm.close();
+													}
 							%>
 						</ul>
 					</div>
@@ -443,22 +442,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 											<option value="">All</option>
 											<%
 												for (Location loc : locList) {
-													String location="";
-													 Cookie[] cookies = request.getCookies();
-													    if (cookies != null) {
-													      for (int i = 0; i < cookies.length; i++) {
-													        if (cookies[i].getName().equals("location")) {
-													          location = cookies[i].getValue();
-													          break;
-													        }
-													      }
-													    }
-													if(loc.getLocationName().equals(location)){%>
-												<option selected="selected" value="<%=loc.getLocationName()%>">
+																						String location="";
+																						 Cookie[] cookies = request.getCookies();
+																						    if (cookies != null) {
+																						      for (int i = 0; i < cookies.length; i++) {
+																						        if (cookies[i].getName().equals("location")) {
+																						          location = cookies[i].getValue();
+																						          break;
+																						        }
+																						      }
+																						    }
+																						if(loc.getLocationName().equals(location)){
+											%>
+											<option selected="selected"
+												value="<%=loc.getLocationName()%>">
 												<%=loc.getLocationName()%></option>
-												
-												<%		System.out.println(location);
-													}else{
+
+											<%
+												System.out.println(location);
+																						}else{
 											%>
 
 
@@ -475,7 +477,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default"
 									data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-info" onclick="setLocation()">Save changes</button>
+								<button type="button" class="btn btn-info"
+									onclick="setLocation()">Save changes</button>
 							</div>
 						</div>
 

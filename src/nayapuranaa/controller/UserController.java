@@ -36,11 +36,13 @@ public class UserController {
 		String email = HtmlUtils.htmlEscape(request.getParameter("email"));
 		String referral = HtmlUtils.htmlEscape(request.getParameter("referral"));
 		String password = HtmlUtils.htmlEscape(request.getParameter("password"));
+		String location = HtmlUtils.htmlEscape(request.getParameter("enterYourCity"));
 		User c = new User();
 		c.setUserName(name);
 		c.setPassword(password);
 		c.setEmail(email);
 		c.setReferral(referral);
+		c.setCity(location);
 		c.setDate(new Date());
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {

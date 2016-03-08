@@ -20,6 +20,7 @@ import nayapuranaa.PMF;
 import nayapuranaa.dao.ProductDao;
 import nayapuranaa.model.Category;
 import nayapuranaa.model.InnerSubCategory;
+import nayapuranaa.model.Product;
 import nayapuranaa.model.SubCategory;
 import nayapuranaa.model.User;
 
@@ -35,11 +36,12 @@ import org.springframework.web.util.HtmlUtils;
 @Controller
 public class IndexController {
 
-	@Autowired ProductDao productDao;
-	
+	@Autowired
+	ProductDao productDao;
+
 	@RequestMapping("/index")
 	public String getHomePage(ModelMap model) {
-		model.addAttribute("productDao",productDao);
+		model.addAttribute("productDao", productDao);
 		return "index";
 	}
 
@@ -53,14 +55,29 @@ public class IndexController {
 		return "about-us";
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/resetforgotpassword", method = RequestMethod.GET)
 	public String resetforgotpassword(ModelMap model, @RequestParam String key) {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		key = HtmlUtils.htmlEscape(key);
-		Query q = pm.newQuery(User.class);
-		q.setFilter("passwordResetCode==key");
-		q.declareParameters("String key");
-		List<User> userlist = (List<User>) q.execute(key);
+
+		List<User> userlist = null;
+		Query q = null;
+		PersistenceManager pm = null;
+		try {
+			pm = PMF.get().getPersistenceManager();
+			key = HtmlUtils.htmlEscape(key);
+			q = pm.newQuery(User.class);
+			q.setFilter("passwordResetCode==key");
+			q.declareParameters("String key");
+			userlist = (List<User>) q.execute(key);
+			userlist = (List<User>) pm.detachCopyAll(userlist);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			q.closeAll();
+			pm.close();
+		}
+
 		if (userlist.isEmpty()) {
 			model.addAttribute("result", "Forgot Password link expire");
 			return "login";
@@ -195,8 +212,9 @@ public class IndexController {
 				q.closeAll();
 				pm.close();
 			}
-			if(request.getAttribute("posted")!=null)
-				model.addAttribute("posted",(String)request.getAttribute("posted"));
+			if (request.getAttribute("posted") != null)
+				model.addAttribute("posted",
+						(String) request.getAttribute("posted"));
 			return "postyourbook";
 		} else {
 			model.addAttribute("p", "postyourbook");
@@ -208,12 +226,12 @@ public class IndexController {
 	@ResponseBody
 	public String getSubCategory(ModelMap model, @RequestParam String category) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
- 		Query q = pm.newQuery(SubCategory.class);
+		Query q = pm.newQuery(SubCategory.class);
 		q.setFilter("categoryId==category");
 		q.setOrdering("name");
 		q.declareParameters("String category");
 		List<SubCategory> subCategory = (List<SubCategory>) q.execute(category);
-		String subs = "";	
+		String subs = "";
 		for (SubCategory subCategory2 : subCategory) {
 			subs = subs + subCategory2.getName() + ",";
 		}

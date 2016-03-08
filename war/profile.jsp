@@ -105,7 +105,8 @@ function isNumberKey(evt){
 											results = (List<College>) q.execute();
 											for (College col : results) {
 												if ((user1.getCollege() != null)
-														&& (user1.getCollege().equals(col.getCollegeName()))) {
+														&& (user1.getCollege().equals(col.getCollegeName()))||(user1.getCollege() != null)
+														&& (user1.getCollege()==col.getCollegeName())) {
 									%>
 									<option selected="selected" value="<%=col.getCollegeName()%>">
 										<%=col.getCollegeName()%>
@@ -133,13 +134,13 @@ function isNumberKey(evt){
 									if (user1.getFbprofile() != null) {
 								%>
 								<input type="text" name="fbprofile" id="fbprofile" class="form-control"
-									required="required" placeholder="Facebook Profile Link (https://www.facebook.com/USERNAME/)" readonly="readonly"
+									 placeholder="Facebook Profile Link (https://www.facebook.com/USERNAME/)" readonly="readonly"
 									value="<%=user1.getFbprofile()%>"  pattern="http://www\.facebook\.com\/(.+)|https://www\.facebook\.com\/(.+)"  />
 								<%
 									} else {
 								%>
 								<input type="text" name="fbprofile" id="fbprofile" class="form-control"
-									required="required" placeholder="Facebook Profile Link (https://www.facebook.com/USERNAME/)" readonly="readonly"  pattern="http://www\.facebook\.com\/(.+)|https://www\.facebook\.com\/(.+)"  />
+									 placeholder="Facebook Profile Link (https://www.facebook.com/USERNAME/)" readonly="readonly"  pattern="http://www\.facebook\.com\/(.+)|https://www\.facebook\.com\/(.+)"  />
 								<%
 									}
 								%>
@@ -166,14 +167,14 @@ function isNumberKey(evt){
 									if (user1.getAddress() != null) {
 								%>
 								<input type="text" name="address" id="address"
-									class="form-control" required="required"
+									class="form-control" 
 									placeholder="Communication Address" readonly="readonly"
 									value="<%=user1.getAddress()%>" />
 								<%
 									} else {
 								%>
 								<input type="text" name="address" id="address"
-									class="form-control" required="required"
+									class="form-control" 
 									placeholder="Communication Address" readonly="readonly" />
 								<%
 									}
@@ -185,13 +186,13 @@ function isNumberKey(evt){
 									if (user1.getPincode() != null) {
 								%>
 								<input type="text" name="pincode" id="pincode"
-									class="form-control" required="required" placeholder="Pincode"
-									readonly="readonly"  pattern="\d{10}" maxlength="6"   onblur="return isNumberKey(event)" value="<%=user1.getPincode()%>" />
+									class="form-control"  placeholder="Pincode"
+									readonly="readonly"  pattern="\d{6}" maxlength="6"   onblur="return isNumberKey(event)" value="<%=user1.getPincode()%>" />
 								<%
 									} else {
 								%>
 								<input type="text" name="pincode" id="pincode"
-									class="form-control"  pattern="\d{10}" maxlength="6"   onblur="return isNumberKey(event)" required="required" placeholder="Pincode"
+									class="form-control"  pattern="\d{6}" maxlength="6"   onblur="return isNumberKey(event)"  placeholder="Pincode"
 									readonly="readonly" />
 								<%
 									}

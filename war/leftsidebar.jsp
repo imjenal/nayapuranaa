@@ -9,6 +9,8 @@
 <div class="col-sm-3">
 	<div class="left-sidebar">
 	<%
+	List<SubCategory> results = (List<SubCategory>)request.getAttribute("subCategoryList");
+	
 	PersistenceManager pm = PMF.get().getPersistenceManager();
 	Query q=null;
 	try { 
@@ -20,13 +22,7 @@
 		<div class="panel-group category-products" id="accordian">
 			<!--category-products-->
 				<%
-					 q = pm.newQuery(SubCategory.class);
-					List<SubCategory> results = null;
-						q = pm.newQuery(SubCategory.class);
-						q.setFilter("categoryId == nameParameter");
-						q.setOrdering("name");
-						q.declareParameters("String nameParameter");
-						results = (List<SubCategory>) q.execute(cat.getName());
+					
 						for (SubCategory subcat : results) {
 							String key=KeyFactory.keyToString(subcat.getSubCategoryId());
 				%>
